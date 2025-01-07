@@ -1,0 +1,27 @@
+.headerContainer {
+  width: full;
+  background-color: #397367;
+  height: 60px;
+}
+
+.headerContainer div {
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  align-items: center;
+}
+
+.header {
+  font-style: italic;
+  font-size: larger;
+  font-weight: bold;
+  margin-left: 2rem;
+  color: black;
+}
+.cartCount {
+  color: orange;
+  font-weight: bold;
+  font-size: large;
+  margin-top: -2rem;
+  margin-left: -0.3rem;
+}

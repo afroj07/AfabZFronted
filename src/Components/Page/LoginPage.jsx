@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Afabzlogo from "/src/assets/loginimage.jpg";
+import LoginImg from "/src/assets/loginimage.jpg";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -46,7 +46,7 @@ const LoginPage = () => {
   return (
     <div>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <img alt="AFabZ" src={Afabzlogo} className="h-3rem w-4rem " />
+        <img alt="AFabZ" src={LoginImg} className="h-3rem w-4rem " />
 
         <div className=" sm:mx-auto sm:w-full sm:max-w-md formBox bg-zinc-50 ">
           <h1 className=" text-center text-xl font-bold tracking-tight ">
