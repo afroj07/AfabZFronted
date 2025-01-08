@@ -1,10 +1,11 @@
 import React from "react";
 import ProductCard from "./ProductCard";
-import style from "./Product.module.css";
-export function ProductList({ products, onAddToCart }) {
-  if (products.length === 0) {
-    return <p className={style.NoProduct}>No products available.</p>;
-  }
+import style from "./ProductCard.module.css";
+
+const ProductList = ({ products, onAddToCart }) => {
+  // if (products.length === 0) {
+  //   return <p className={style.NoProduct}>No products available.</p>;
+  // }
 
   return (
     <div className={style.ProductList}>
@@ -15,4 +16,6 @@ export function ProductList({ products, onAddToCart }) {
       </div>
     </div>
   );
-}
+};
+
+export default ProductList;

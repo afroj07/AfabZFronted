@@ -1,22 +1,23 @@
 import React from "react";
-import style from "./Product.module.css";
+import PremimumImg from "/src/assets/premium.jpg";
+import styles from "./ProductCard.module.css";
 const ProductCard = ({ product }) => {
   return (
-    <div className={style.productCard}>
+    <div className={styles.productCard}>
       <img
-        src={product.images[0]}
-        alt={product.name}
-        className={style.productImage}
+        src={PremimumImg}
+        alt="img"
+        className={styles.productImage}
         loading="lazy"
         onError={(e) => {
           e.target.src = "https://via.placeholder.com/150"; // Fallback image
         }}
       />
-      <div className={style.productInfo}>
-        <h3 className={style.productName}>${product.name}</h3>
-        <p className={style.productPrice}>${product.price}</p>
+      <div className={styles.productInfo}>
+        <h3 className={styles.productName}>name</h3>
+        <p className={styles.productPrice}>Rs.200</p>
         <button
-          className={style.addBtnCard}
+          className={styles.addBtnCard}
           onClick={() => onAddToCart(product.product_id)}
         >
           Add to Cart

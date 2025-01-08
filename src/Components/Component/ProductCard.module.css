@@ -1,0 +1,32 @@
+.productCard {
+  width: 220px;
+  height: 340px;
+  border: 1px solid wheat;
+  background-color: #b1ede8;
+  margin: 0.5rem;
+  text-align: center;
+  box-shadow: rgb(24, 98, 98);
+}
+
+.productImage {
+  margin: auto;
+  margin-top: 0.2rem;
+  width: 210px;
+  height: 250px;
+}
+
+.addBtnCard {
+  background-color: #00abe4;
+  padding: 3px;
+  width: 90%;
+  color: rgb(12, 57, 57);
+  border-radius: 5px;
+}
+.productName {
+  font-weight: bold;
+  color: rgb(24, 98, 98);
+}
+.productPrice {
+  font-size: medium;
+  color: rgb(49, 126, 126);
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import Afabzlogo from "/src/assets/afabzlogo.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons/faCartShopping";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Header.module.css";
@@ -10,13 +10,7 @@ const Header = () => {
     <div className={styles.headerContainer}>
       <div>
         <div>
-          <img
-            src={Afabzlogo}
-            alt="logo"
-            height="60px"
-            width="60px"
-            className="rounded-full mt-2"
-          />
+          <img src={Afabzlogo} alt="logo" className={styles.logoImage} />
           <h1 className={styles.header}>AfabZ</h1>
         </div>
 
@@ -28,14 +22,14 @@ const Header = () => {
           />
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
-            className="mx-3 text-slate-700"
+            className="  text-slate-700 lg:mx-6"
           />
         </div>
         <div>
           <FontAwesomeIcon
             icon={faCartShopping}
             size="2x"
-            className="text-slate-800"
+            className="text-slate-800 lg:ml-12 mt-1"
           />
           <span className={styles.cartCount}>0</span>
         </div>
