@@ -7,8 +7,8 @@ import CustomerHomePage from "../Page/CustomerHomePage";
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* <Route path="/" element={<LoginPage />} /> */}
-      <Route path="/" element={<CustomerHomePage />} />
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/customerhome" element={<CustomerHomePage />} />
       <Route path="/register" element={<RegistrationPage />} />
     </Routes>
   );

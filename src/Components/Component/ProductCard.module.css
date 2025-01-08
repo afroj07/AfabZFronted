@@ -4,8 +4,9 @@
   border: 1px solid wheat;
   background-color: #b1ede8;
   margin: 0.5rem;
+  margin-top: 1rem;
   text-align: center;
-  box-shadow: rgb(24, 98, 98);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .productImage {

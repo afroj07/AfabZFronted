@@ -1,11 +1,12 @@
 import React from "react";
 import Afabzlogo from "/src/assets/afabzlogo.jpg";
+import ProfileDropdown from "./ProfileDropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
+
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons/faCartShopping";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Header.module.css";
-const Header = () => {
+const Header = ({ cartCount, username }) => {
   return (
     <div className={styles.headerContainer}>
       <div>
@@ -31,11 +32,9 @@ const Header = () => {
             size="2x"
             className="text-slate-800 lg:ml-12 mt-1"
           />
-          <span className={styles.cartCount}>0</span>
+          <span className={styles.cartCount}>{cartCount}</span>
         </div>
-        <div>
-          <FontAwesomeIcon icon={faUser} size="2x" className="text-slate-800" />
-        </div>
+        <ProfileDropdown username={username} />
       </div>
     </div>
   );

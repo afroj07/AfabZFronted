@@ -3,7 +3,6 @@ import Header from "../Component/Header";
 import ProductList from "../Component/ProductList";
 import CategoryNavigation from "../Component/CategoryNavigation";
 import Footer from "../Component/Footer";
-import ProductCard from "../Component/ProductCard";
 const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [cartCount, setCartCount] = useState(0);
@@ -97,10 +96,9 @@ const HomePage = () => {
       <nav className="navigation">
         <CategoryNavigation onCategoryClick={handleCateoryClick} />
       </nav>
-      {/* <main className="main-content">
+      <main className="main-content">
         <ProductList products={products} onAddToCart={handleAddToCart} />
-      </main> */}
-      <ProductCard />
+      </main>
       <Footer />
     </div>
   );
