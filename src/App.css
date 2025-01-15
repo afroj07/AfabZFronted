@@ -66,12 +66,13 @@ label {
 }
 
 a {
-  color: rgb(73, 73, 146);
+  color: #397367;
+  font-weight: 600;
 }
 
 a:hover {
-  color: #397367;
-  font-weight: 600;
+  color: #6abfae;
+  font-weight: 500;
 }
 
 .customer-homepage {
@@ -96,7 +97,7 @@ a:hover {
   position: absolute;
   z-index: 12;
   width: 120px;
-  height: 150px;
+  height: 200px;
   background-color: #2e2e33;
   border-radius: 10px;
 }

@@ -90,13 +90,13 @@ const HomePage = () => {
   return (
     <div className="customer-homepage">
       <Header
-        cartCount={isCartLoading ? "..." : cartError ? "Error" : cartCount}
+        CartCount={isCartLoading ? 5 : cartError ? "Error" : cartCount}
         username={username}
       />
       <nav className="navigation">
         <CategoryNavigation onCategoryClick={handleCateoryClick} />
       </nav>
-      <main className="main-content">
+      <main className="w-full">
         <ProductList products={products} onAddToCart={handleAddToCart} />
       </main>
       <Footer />

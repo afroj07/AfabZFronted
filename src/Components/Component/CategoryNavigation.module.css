@@ -1,5 +1,8 @@
 .navContainer {
   width: 100%;
+  background-color: #6b7171;
+  color: goldenrod;
+  box-sizing: rgb(0, 0, 0.3);
   height: 20px;
 }
 .itemList {
@@ -11,9 +14,8 @@
 .item {
   font-size: small;
   font-family: cursive;
-  color: navy;
 }
 .item:hover {
-  color: chartreuse;
+  color: #589cef;
   cursor: pointer;
 }

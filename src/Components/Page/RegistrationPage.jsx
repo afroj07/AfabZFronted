@@ -32,7 +32,7 @@ const RegistrationPage = () => {
       if (response.ok) {
         console.log("User registered successfully:", data);
         // Redirect to login page
-        window.location.href = "/login";
+        window.location.href = "/";
       } else {
         throw new Error(data.error || "Registration failed");
       }

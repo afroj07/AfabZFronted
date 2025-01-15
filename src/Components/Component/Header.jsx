@@ -1,12 +1,10 @@
 import React from "react";
-import Afabzlogo from "/src/assets/afabzlogo.jpg";
+import Afabzlogo from "/src/assets/afabzlogo1.png";
+import SearchImg from "/src/assets/searchImg.png";
 import ProfileDropdown from "./ProfileDropdown";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons/faCartShopping";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Header.module.css";
-const Header = ({ cartCount, username }) => {
+import CartIcon from "./CartIcon";
+const Header = ({ CartCount, username }) => {
   return (
     <div className={styles.headerContainer}>
       <div>
@@ -15,25 +13,15 @@ const Header = ({ cartCount, username }) => {
           <h1 className={styles.header}>AfabZ</h1>
         </div>
 
-        <div className="bg-slate-300 h-8 w-fit rounded-md border-none">
+        <div className={styles.inputDiv}>
           <input
             type="text"
             placeholder="What are you looking for"
-            className=" bg-slate-300 border-none outline-none  mx-3"
+            className=" bg-slate-200 border-none outline-none  lg:mx-3"
           />
-          <FontAwesomeIcon
-            icon={faMagnifyingGlass}
-            className="  text-slate-700 lg:mx-6"
-          />
+          <img src={SearchImg} alt="searchImg" className="lg:mx-3 h-8 w-8" />
         </div>
-        <div>
-          <FontAwesomeIcon
-            icon={faCartShopping}
-            size="2x"
-            className="text-slate-800 lg:ml-12 mt-1"
-          />
-          <span className={styles.cartCount}>{cartCount}</span>
-        </div>
+        <CartIcon cartCount={CartCount} />
         <ProfileDropdown username={username} />
       </div>
     </div>

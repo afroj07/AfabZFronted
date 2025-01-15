@@ -19,7 +19,7 @@ const ProfileDropdown = ({ username }) => {
           <img
             src={Avatar}
             alt="User-Avatar"
-            className="avatarImg"
+            className="avatarImg h-12 w-12"
             onError={(e) => {
               e.target.src = "fallback-logo.png";
             }}
@@ -37,9 +37,10 @@ const ProfileDropdown = ({ username }) => {
           <span className="username text-slate-500 font-bold">
             {username || "Guest"}
           </span>
-          <hr />
+          <hr className="bg-slate-400 max-h-0.5 w-full" />
           <a href="#">Profile</a>
           <a href="#">Orders</a>
+          <a href="#">Sign Out</a>
           <button className="logout" onClick={handleLogout}></button>
         </div>
       )}

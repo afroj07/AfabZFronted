@@ -1,5 +1,4 @@
 import React from "react";
-import PremimumImg from "/src/assets/premium.jpg";
 import styles from "./ProductCard.module.css";
 const ProductCard = ({ product, onAddToCart }) => {
   return (
@@ -15,7 +14,7 @@ const ProductCard = ({ product, onAddToCart }) => {
       />
       <div className={styles.productInfo}>
         <h3 className={styles.productName}>{product.name}</h3>
-        <p className={styles.productPrice}>{product.description}</p>
+        <p className={styles.productDescription}>{product.description}</p>
         <p className={styles.productPrice}>Rs{product.price}</p>
         <button
           className={styles.addBtnCard}

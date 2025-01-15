@@ -1,8 +1,8 @@
 .productCard {
   width: 220px;
-  height: 340px;
-  border: 1px solid wheat;
-  background-color: #b1ede8;
+  height: 330px;
+  background-color: rgb(248, 242, 242);
+  border-radius: 5px;
   margin: 0.5rem;
   margin-top: 1rem;
   text-align: center;
@@ -12,22 +12,33 @@
 .productImage {
   margin: auto;
   margin-top: 0.2rem;
-  width: 210px;
-  height: 250px;
+  width: 200px;
+  height: 240px;
+  border-radius: 5px;
 }
 
 .addBtnCard {
-  background-color: #00abe4;
+  background-color: goldenrod;
   padding: 3px;
   width: 90%;
   color: rgb(12, 57, 57);
   border-radius: 5px;
 }
+.addBtnCard:hover {
+  cursor: pointer;
+  background-color: #00abe4;
+  transition: ease-in-out;
+  transition-duration: 0.5;
+}
 .productName {
   font-weight: bold;
-  color: rgb(24, 98, 98);
+  color: rgb(49, 126, 126);
 }
 .productPrice {
   font-size: medium;
   color: rgb(49, 126, 126);
+}
+.productDescription {
+  font-size: small;
+  font-family: "Courier New", Courier, monospace;
 }
