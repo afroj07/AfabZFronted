@@ -1,96 +1,205 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Component/Header";
 import Footer from "../Component/Footer";
 import "/src/style/CartPage.css";
+import { useNavigate } from "react-router-dom";
+
 const CartPage = () => {
-  // Example initial cart data - replace with your actual data source
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Italy Pizza",
-      price: 6.81 * 74, // Assuming 1 dollar = 74 rupees
-      quantity: 1,
-      image: "https://picsum.photos/200/300",
-      description: "Extra cheese and toping",
-    },
-    {
-      id: 2,
-      name: "Combo Plate",
-      price: 6.81 * 74,
-      quantity: 1,
-      image: "https://picsum.photos/200/300",
-      description: "Extra cheese and toping",
-    },
-    {
-      id: 3,
-      name: "Spanish Rice",
-      price: 6.81 * 74,
-      quantity: 1,
-      image: "https://picsum.photos/200/300",
-      description: "Extra garlic",
-    },
-    {
-      id: 4,
-      name: "Chicken Wings",
-      price: 8.99 * 74,
-      quantity: 1,
-      image: "https://picsum.photos/200/300",
-      description: "Spicy buffalo sauce",
-    },
-    {
-      id: 5,
-      name: "Caesar Salad",
-      price: 5.99 * 74,
-      quantity: 1,
-      image: "https://picsum.photos/200/300",
-      description: "Fresh romaine lettuce",
-    },
-    {
-      id: 6,
-      name: "Garlic Bread",
-      price: 3.99 * 74,
-      quantity: 1,
-      image: "https://picsum.photos/200/300",
-      description: "With melted cheese",
-    },
-    {
-      id: 7,
-      name: "Pasta Carbonara",
-      price: 9.99 * 74,
-      quantity: 1,
-      image: "https://picsum.photos/200/300",
-      description: "Creamy sauce with bacon",
-    },
-  ]);
+  const navigate = useNavigate();
 
-  const shipping = 5.0 * 74; // Convert shipping to rupees
+  const [cartItems, setCartItems] = useState([]);
+  const [overallPrice, setOverallPrice] = useState(0);
+  const [username, setUsername] = useState("");
+  const [subtotal, setSubtotal] = useState(0); // State to store the subtotal
 
-  const handleRemoveItem = (itemId) => {
-    setCartItems(cartItems.filter((item) => item.id !== itemId));
-  };
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const response = await fetch("http://localhost:9090/api/cart/items", {
+          credentials: "include", // Include the authToken cookie
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch cart items");
+        }
+        const data = await response.json();
+        setCartItems(
+          data?.cart?.products.map((item) => ({
+            ...item,
+            total_price: parseFloat(item.total_price).toFixed(2),
+            price_per_unit: parseFloat(item.price_per_unit).toFixed(2),
+          })) || []
+        );
+        setOverallPrice(
+          parseFloat(data?.cart?.overall_total_price || 0).toFixed(2)
+        );
+        setUsername(data?.username || ""); // Save the username from the response
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
 
-  const handleQuantityChange = (itemId, newQuantity) => {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === itemId
-          ? { ...item, quantity: parseInt(newQuantity) || 1 }
-          : item
-      )
-    );
-  };
+    fetchCartItems();
+  }, []);
 
-  const calculateTotal = () => {
-    return cartItems
-      .reduce((total, item) => total + item.price * item.quantity, 0)
+  useEffect(() => {
+    // Update subtotal whenever cartItems change
+    const total = cartItems
+      .reduce((total, item) => total + parseFloat(item.total_price), 0)
       .toFixed(2);
+    setSubtotal(total);
+  }, [cartItems]);
+
+  const handleBackBtn = () => {
+    navigate("/customerhome");
   };
 
-  const calculateSubtotal = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
+  const handleRemoveItem = async (productId) => {
+    try {
+      const response = await fetch("http://localhost:9090/api/cart/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          username, // Include the username
+          productId,
+        }),
+      });
+      if (response.status === 204) {
+        setCartItems((prevItems) =>
+          prevItems.filter((item) => item.product_id !== productId)
+        );
+      } else {
+        throw new Error("Failed to remove item");
+      }
+    } catch (error) {
+      console.error("Error removing item:", error);
+    }
   };
+
+  const handleQuantityChange = async (productId, newQuantity) => {
+    try {
+      if (newQuantity <= 0) {
+        handleRemoveItem(productId);
+        return;
+      }
+      const response = await fetch("http://localhost:9090/api/cart/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          username, // Include the username
+          productId,
+          quantity: newQuantity,
+        }),
+      });
+      if (response.ok) {
+        setCartItems((prevItems) =>
+          prevItems.map((item) =>
+            item.product_id === productId
+              ? {
+                  ...item,
+                  quantity: newQuantity,
+                  total_price: (item.price_per_unit * newQuantity).toFixed(2), // Update total price
+                }
+              : item
+          )
+        );
+      } else {
+        throw new Error("Failed to update quantity");
+      }
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+    }
+  };
+
+  // RazorPay integration for payment
+
+  const handleCheckout = async () => {
+    try {
+      const requestBody = {
+        totalAmount: subtotal,
+        cartItems: cartItems.map((item) => ({
+          productId: item.product_id,
+          quantity: item.quantity,
+          price: item.price_per_unit,
+        })),
+      };
+
+      // Create Razorpay order via backend
+
+      const response = await fetch("http://localhost:9090/api/payment/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) throw new Error(await response.text());
+      const razorpayOrderId = await response.text();
+
+      // open Razorpay checkout interface
+
+      const options = {
+        key: "rzp_test_mXd5LVamcdp88C", // razorpay key ID
+        amount: subtotal * 100, // Razorpay expects amount in paise
+        currency: "INR",
+        name: "AfabZ",
+        description: "Test-transction",
+        order_id: razorpayOrderId,
+        handler: async function (response) {
+          try {
+            // Payment succes s verification on backend
+
+            const verifyResponse = await fetch(
+              "http://localhost:9090/api/payment/verify",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({
+                  razorpayOrderId: response.razorpay_order_id,
+                  razorpayPaymentId: response.razorpay_payment_id, //Ensure key match backend
+                  razorpaySignature: response.razorpay_signature,
+                }),
+              }
+            );
+
+            const result = await verifyResponse.text();
+
+            if (verifyResponse.ok) {
+              alert("Payment verified successfully!");
+              navigate("/customerhome"); //redirect to Customer Home Page
+            } else {
+              alert("Payement verification failed: " + result);
+            }
+          } catch (error) {
+            console.error("Error verifying payment:", error);
+            alert("Payment verification failed. Please try again.");
+          }
+        },
+
+        prefill: {
+          name: username,
+          email: "test@example.com",
+          contact: "9999999999",
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      alert("Payment failed, Please try again.");
+      console.error("Error during checkout:", error);
+    }
+  };
+
+  const totalProducts = () => {
+    return cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  };
+  const shipping = (5.0 * 74).toFixed(2);
 
   if (cartItems.length === 0) {
     return (
@@ -103,75 +212,96 @@ const CartPage = () => {
 
   return (
     <div style={{ width: "100vw" }}>
-      <Header />
-      <div className="cart-pag lg:w-7/12">
-        <a href="3" className="back-button">
-          {" "}
-          ← Shopping Continue
-        </a>
+      <Header cartCount={totalProducts()} username={username} />
+      <div className="cart-container">
+        <div className="cart-page">
+          <button onClick={handleBackBtn} className="back-button">
+            ← Shopping Continue
+          </button>
 
-        <div className="cart-header">
-          <h2>Shopping cart</h2>
-          <p>You have {cartItems.length} items in your cart</p>
-        </div>
+          <div className="cart-header">
+            <h2>Shopping Cart</h2>
+            <p>You have {cartItems.length} items in your cart</p>
+          </div>
 
-        <div className="cart-items">
-          {cartItems.map((item) => (
-            <div key={item.id} className="cart-item">
-              <img src={item.image} alt={item.name} />
-              <div className="item-details">
-                <div className="item-info">
-                  <h3>{item.name}</h3>
-                  <p>{item.description}</p>
-                </div>
-                <div className="item-actions">
-                  <div className="quantity-controls">
+          <div className="cart-items">
+            {cartItems.map((item) => (
+              <div key={item.product_id} className="cart-item">
+                <img
+                  src={
+                    item.image_url ||
+                    "https://via.placeholder.com/80?text=No+Image"
+                  }
+                  alt={item.name}
+                />
+                <div className="item-details">
+                  <div className="item-info">
+                    <h3>{item.name}</h3>
+                    <p>{item.description}</p>
+                  </div>
+                  <div className="item-actions">
+                    <div className="quantity-controls">
+                      <button
+                        onClick={() =>
+                          handleQuantityChange(
+                            item.product_id,
+                            item.quantity - 1
+                          )
+                        }
+                      >
+                        -
+                      </button>
+                      <span className="quantity-display">{item.quantity}</span>
+                      <button
+                        onClick={() =>
+                          handleQuantityChange(
+                            item.product_id,
+                            item.quantity + 1
+                          )
+                        }
+                      >
+                        +
+                      </button>
+                    </div>
+                    <span className="price">₹{item.total_price}</span>
                     <button
-                      onClick={() =>
-                        handleQuantityChange(item.id, item.quantity - 1)
-                      }
+                      className="remove-btn"
+                      onClick={() => handleRemoveItem(item.product_id)}
                     >
-                      -
-                    </button>
-                    <span className="quantity-display">{item.quantity}</span>
-                    <button
-                      onClick={() =>
-                        handleQuantityChange(item.id, item.quantity + 1)
-                      }
-                    >
-                      +
+                      🗑️
                     </button>
                   </div>
-                  <span className="price">₹{item.price.toFixed(2)}</span>
-                  <button
-                    className="remove-btn"
-                    onClick={() => handleRemoveItem(item.id)}
-                  >
-                    🗑️
-                  </button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="checkout-section lg:w-7/12">
-        <h2>Order Summary</h2>
-        <div className="checkout-summary">
-          <div className="summary-row">
-            <span>Subtotal</span>
-            <span>₹{calculateSubtotal().toFixed(2)}</span>
+        <div className="checkout-section">
+          <h2>Order Summary</h2>
+          <div className="checkout-summary">
+            <div className="summary-row">
+              <span>Subtotal</span>
+              <span>₹{subtotal}</span>
+            </div>
+            <div className="summary-row">
+              <span>Shipping</span>
+              <span>₹{shipping}</span>
+            </div>
+            <div className="summary-row">
+              <span>Total Products</span>
+              <span>{totalProducts()}</span>
+            </div>
+            <div className="summary-row total">
+              <span>Total</span>
+              <span>
+                ₹{(parseFloat(subtotal) + parseFloat(shipping)).toFixed(2)}
+              </span>
+            </div>
+            <button className="checkout-button" onClick={handleCheckout}>
+              Proceed to Checkout
+            </button>
           </div>
-          <div className="summary-row">
-            <span>Shipping</span>
-            <span>₹{shipping.toFixed(2)}</span>
-          </div>
-          <div className="summary-row total">
-            <span>Total</span>
-            <span>₹{(calculateSubtotal() + shipping).toFixed(2)}</span>
-          </div>
-          <button className="checkout-button">Proceed to Checkout</button>
         </div>
       </div>
       <Footer />
