@@ -1,0 +1,89 @@
+.maindiv{
+   background-image: url("/src/assets/shipping.jpg");
+   background-size: cover;
+   background-attachment: fixed;
+   width: 100%;
+}
+
+.main-content{
+  margin: auto;
+}
+.form-title{
+  background-color: #58d3d3;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 0px 20px;
+  font-family: 'Courier New', Courier, monospace;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  color: #333;
+  box-shadow: 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+.order-List {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.order-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 800px;
+  padding: 20px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.order-card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+  background: #58d3d3;
+  box-shadow: 0px -5px #a5a5e0;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  font-family: 'Source Sans Pro';
+}
+
+.order-card-body {
+  gap: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-product-image {
+  width: auto;
+  max-width: 300px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.order-details {
+  border-radius: 90px;
+  display: flex;
+  flex-direction: column;
+  color: #333;;
+  align-items: center;
+  gap: 5px;
+  background: #f4f2f4;
+  width: 400px;
+  justify-content: center;
+}
+
+.product-name {
+  font-size: 1.2rem;;
+  font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  font-size: 1rem;
+  text-align: center;
+}

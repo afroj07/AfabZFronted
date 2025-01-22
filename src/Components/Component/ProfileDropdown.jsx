@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Avatar from "/src/assets/useravatar.png";
+import { useNavigate } from "react-router-dom";
 
 const ProfileDropdown = ({ username }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,9 +8,14 @@ const ProfileDropdown = ({ username }) => {
     setIsOpen(!isOpen);
   };
 
+  const navigate = useNavigate();
   const handleLogout = () => {
     console.log("User logged out");
     // Add your logout functionality here
+  };
+
+  const handleOreder = () => {
+    navigate("/orders");
   };
 
   return (
@@ -39,9 +45,12 @@ const ProfileDropdown = ({ username }) => {
           </span>
           <hr className="bg-slate-400 max-h-0.5 w-full" />
           <a href="#">Profile</a>
-          <a href="#">Orders</a>
-          <a href="#">Sign Out</a>
-          <button className="logout" onClick={handleLogout}></button>
+          <button className="logout" onClick={handleOreder}>
+            Orders
+          </button>
+          <button className="logout" onClick={handleLogout}>
+            Sign Out
+          </button>
         </div>
       )}
     </div>

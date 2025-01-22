@@ -90,7 +90,7 @@ const HomePage = () => {
   return (
     <div className="customer-homepage">
       <Header
-        CartCount={isCartLoading ? 5 : cartError ? "Error" : cartCount}
+        CartCount={isCartLoading ? "." : cartError ? "Error" : cartCount}
         username={username}
       />
       <nav className="navigation">

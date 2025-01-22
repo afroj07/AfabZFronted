@@ -3,13 +3,23 @@ import Afabzlogo from "/src/assets/afabzlogo1.png";
 import SearchImg from "/src/assets/searchImg.png";
 import ProfileDropdown from "./ProfileDropdown";
 import styles from "./Header.module.css";
+
 import CartIcon from "./CartIcon";
+import { useNavigate } from "react-router-dom";
 const Header = ({ CartCount, username }) => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("/customerhome");
+  };
+
   return (
     <div className={styles.headerContainer}>
       <div>
         <div>
-          <img src={Afabzlogo} alt="logo" className={styles.logoImage} />
+          <button onClick={handleNavigate}>
+            <img src={Afabzlogo} alt="logo" className={styles.logoImage} />
+          </button>
           <h1 className={styles.header}>AfabZ</h1>
         </div>
 
